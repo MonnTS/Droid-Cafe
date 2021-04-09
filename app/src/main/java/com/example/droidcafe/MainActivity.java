@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Desert>> call, Throwable t) {
-                Log.d("MA", "onFailure:" + t.toString());
+                Log.d("MainActivity", "onFailure:" + t.toString());
             }
         });
     }

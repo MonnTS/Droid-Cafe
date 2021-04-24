@@ -8,6 +8,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.View;
@@ -23,10 +25,12 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DesertListAdapter.DesertSelectedListener{
 
     private final Retrofit mDesertsRetrofit;
     private final DesertsApi mDesertsApi;
+    private RecyclerView mDesertList;
+    private DesertListAdapter mDesertListAdapter;
 
     public MainActivity() {
         mDesertsRetrofit = RetrofitSingleton.getDesertsRetrofit();
@@ -52,12 +56,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        mDesertList = findViewById(R.id.desertsRecyclerView);
+        mDesertListAdapter = new DesertListAdapter(this);
+        mDesertList.setAdapter(mDesertListAdapter);
+        mDesertList.setLayoutManager(new LinearLayoutManager(this));
+
+
         mDesertsApi.getDeserts().enqueue(new Callback<List<Desert>>() {
             @Override
             public void onResponse(Call<List<Desert>> call, Response<List<Desert>> response) {
                 Log.d("MainActivity", "onResponse:" + response.toString());
                 List<Desert> deserts = response.body();
                 Log.d("MainActivity", deserts.toString());
+                mDesertListAdapter.setDesertList(deserts);
             }
 
             @Override
@@ -103,5 +115,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void desertSelected(int position) {
+        Log.d("MainActivity", "Selected desert: " + position);
     }
 }

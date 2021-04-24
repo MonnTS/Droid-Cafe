@@ -3,6 +3,7 @@ package com.example.droidcafe;
 public class Desert {
     Long id;
     String name;
+    String description;
     Float price;
 
     @Override
@@ -10,6 +11,7 @@ public class Desert {
         return "Desert{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
                 ", price=" + price +
                 '}';
     }
